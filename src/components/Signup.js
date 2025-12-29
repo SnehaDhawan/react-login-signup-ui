@@ -27,9 +27,7 @@ function Signup({ onSignupSuccess }) {
 
   useEffect(() => {
     if (alertMessage) {
-      const timer = setTimeout(() => {
-        setAlertMessage("");
-      }, 4000);
+      const timer = setTimeout(() => setAlertMessage(""), 4000);
       return () => clearTimeout(timer);
     }
   }, [alertMessage]);
@@ -70,9 +68,7 @@ function Signup({ onSignupSuccess }) {
 
     setAlertMessage("Signup successful! Please login now.");
 
-    if (onSignupSuccess) {
-      onSignupSuccess();
-    }
+    if (onSignupSuccess) onSignupSuccess();
 
     setName("");
     setMobile("");
@@ -81,54 +77,56 @@ function Signup({ onSignupSuccess }) {
   };
 
   return (
-    <div className="form-box">
-      <h2>Signup</h2>
-      {alertMessage && <div className="custom-alert">{alertMessage}</div>}
+    <div className="wrapper">
+      <form onSubmit={handleSubmit} noValidate>
+        <h2>Signup</h2>
+        {alertMessage && <div className="custom-alert">{alertMessage}</div>}
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Mobile Number"
-          value={mobile}
-          onChange={(e) => setMobile(e.target.value)}
-          required
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+        <div className="input-field">
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder=" "
+            required
+          />
+          <label>Full Name</label>
+        </div>
 
-        <div className="password-input-container" style={{ position: "relative" }}>
+        <div className="input-field">
+          <input
+            type="text"
+            value={mobile}
+            onChange={(e) => setMobile(e.target.value)}
+            placeholder=" "
+            required
+          />
+          <label>Mobile Number</label>
+        </div>
+
+        <div className="input-field">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder=" "
+            required
+          />
+          <label>Email</label>
+        </div>
+
+        <div className="input-field" style={{ position: "relative" }}>
           <input
             type={showPassword ? "text" : "password"}
-            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            placeholder=" "
             required
             style={{ paddingRight: "40px" }}
           />
+          <label>Password</label>
           <span
             onClick={() => setShowPassword(!showPassword)}
-            style={{
-              position: "absolute",
-              right: "10px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              cursor: "pointer",
-              color: "#555",
-              fontSize: "22px",
-              userSelect: "none",
-            }}
             aria-label={showPassword ? "Hide password" : "Show password"}
             title={showPassword ? "Hide password" : "Show password"}
           >
@@ -137,7 +135,7 @@ function Signup({ onSignupSuccess }) {
         </div>
 
         {password.length > 0 && (
-          <div className="password-note-box">
+          <div className="password-note-box" aria-live="polite">
             <p>Password must contain:</p>
             <ul>
               <li className={validations.length ? "valid" : "invalid"}>
@@ -156,7 +154,9 @@ function Signup({ onSignupSuccess }) {
           </div>
         )}
 
-        <button type="submit">Signup</button>
+        <button type="submit" aria-label="Sign Up">
+          Sign Up
+        </button>
       </form>
     </div>
   );

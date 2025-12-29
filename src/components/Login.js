@@ -4,15 +4,12 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [alertMessage, setAlertMessage] = useState(""); // custom alert message
+  const [alertMessage, setAlertMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  // Auto-clear alert after 4 seconds
   useEffect(() => {
     if (alertMessage) {
-      const timer = setTimeout(() => {
-        setAlertMessage("");
-      }, 4000);
+      const timer = setTimeout(() => setAlertMessage(""), 4000);
       return () => clearTimeout(timer);
     }
   }, [alertMessage]);
@@ -42,55 +39,50 @@ function Login({ onLoginSuccess }) {
       return;
     }
 
-    setAlertMessage(""); // Clear alert on success
+    setAlertMessage("");
 
-    // Call success callback with user data
-    if (onLoginSuccess) {
-      onLoginSuccess(storedUser);
-    }
+    if (onLoginSuccess) onLoginSuccess(storedUser);
   };
 
   return (
-    <div className="form-box">
-      <h2>Login</h2>
-      {alertMessage && <div className="custom-alert">{alertMessage}</div>}
+    <div className="wrapper">
+      <form onSubmit={handleSubmit} noValidate>
+        <h2>Login</h2>
+        {alertMessage && <div className="custom-alert">{alertMessage}</div>}
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <div className="password-input-container" style={{ position: "relative" }}>
+        <div className="input-field">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder=" "
+            required
+          />
+          <label>Enter your email</label>
+        </div>
+
+        <div className="input-field" style={{ position: "relative" }}>
           <input
             type={showPassword ? "text" : "password"}
-            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            placeholder=" "
             required
             style={{ paddingRight: "40px" }}
           />
+          <label>Enter your password</label>
           <span
             onClick={() => setShowPassword(!showPassword)}
-            style={{
-              position: "absolute",
-              right: "10px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              cursor: "pointer",
-              color: "#555",
-              fontSize: "22px",
-              userSelect: "none",
-            }}
             aria-label={showPassword ? "Hide password" : "Show password"}
             title={showPassword ? "Hide password" : "Show password"}
           >
             {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
           </span>
         </div>
-        <button type="submit">Login</button>
+
+        <button type="submit" aria-label="Log In">
+          Log In
+        </button>
       </form>
     </div>
   );

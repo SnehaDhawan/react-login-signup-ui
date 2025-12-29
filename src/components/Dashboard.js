@@ -6,7 +6,7 @@ function Dashboard({ user, onLogout }) {
       <h2>Welcome, {user.name}!</h2>
       <p>Your registered email: {user.email}</p>
       <p>Your mobile number: {user.mobile}</p>
-      <button onClick={onLogout} className="logout-button">
+      <button onClick={onLogout} className="logout-button" aria-label="Logout">
         Logout
       </button>
     </div>
